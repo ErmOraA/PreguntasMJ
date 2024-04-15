@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego para mi Novia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0; /* Color de fondo pastel */
+      margin: 0;
+      padding: 0;
+    }
+    #game {
+      margin-top: 50px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      display: inline-block;
+    }
+    h2 {
+      color: #ff7e6b; /* Color de título pastel */
+    }
+    button {
+      background-color: #ff7e6b; /* Color de botón pastel */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #ff5a4d; /* Color de botón pastel oscuro al pasar el cursor */
+    }
+    #video {
+      display: none;
+      margin: 20px auto;
+    }
+    #redirectBtn {
+      display: none;
+      background-color: #ff6666; /* Color rojo pastel */
+      border-radius: 5px;
+      padding: 8px 16px; /* Ajuste el padding para hacer el botón más pequeño */
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+    }
+    #redirectBtn:hover {
+      background-color: #ff5050; /* Color rojo pastel oscuro al pasar el cursor */
+    }
+    #score {
+      font-size: 18px;
+      color: #ff7e6b; /* Color de texto pastel */
+      margin-top: 20px;
+    }
+    /* Decoración */
+    #heart {
+      color: #ff7e6b;
+      font-size: 50px;
+    }
+    #submitBtn {
+      display: none;
+      margin-top: 10px;
+    }
+    input[type="text"] {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="game">
+  <span id="heart">&hearts;</span>
+  <h2>Cuestionario para MJ🤍</h2>
+  <p>Responde correctamente 6 preguntas para llegar a tu regalo.</p>
+  <button onclick="startGame()">Comenzar</button>
+  <p id="question"></p>
+  <input type="text" id="answer"><br>
+  <button id="submitBtn" onclick="checkAnswer()">Responder</button>
+  <p id="score">Respuestas correctas: <span id="points">0</span>/6</p>
+</div>
+
+<video id="video" width="1280" height="720" controls>
+  <source src="tu_video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div id="redirectBtn" onclick="redirectToOtherSite()">Pulsame para ir a tu regalo!!</div>
+
+<script>
+  var questions = [
+    {question: "¿Cuál es mi color favorito?", answer: "Azul"},
+    {question: "¿Qué comida me gusta más?", answer: "Pizza"},
+    {question: "¿Dónde nos conocimos?", answer: "En el Luís"},
+    {question: "¿Cuál es mi superhéroe favorito?", answer: "SpiderMan"},
+    {question: "¿De qué equipo soy?", answer: "Real Madrid"},
+    {question: "¿Qué canción te dediqué?", answer: "Cosas que no te dije"}
+  ];
+  var currentQuestion = 0;
+  var score = 0;
+
+  function startGame() {
+    document.getElementById("question").innerText = questions[currentQuestion].question;
+    document.getElementById("answer").style.display = "block";
+    document.getElementById("submitBtn").style.display = "block";
+    document.getElementById("answer").style.margin = "10px auto";
+    document.getElementById("submitBtn").style.margin = "10px auto";
+    document.getElementById("game").removeChild(document.querySelector("button"));
+    document.getElementById("game").removeChild(document.querySelector("p"));
+  }
+
+  function checkAnswer() {
+    var answer = document.getElementById("answer").value.toLowerCase();
+    if (answer.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === questions[currentQuestion].answer.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) {
+      score++;
+      document.getElementById("points").innerText = score;
+    } else {
+      return; // No permitir continuar si la respuesta es incorrecta
+    }
+    currentQuestion++;
+    if (currentQuestion < 6) {
+      document.getElementById("question").innerText = questions[currentQuestion].question;
+      document.getElementById("answer").value = "";
+    } else {
+      finishGame();
+    }
+  }
+
+  function finishGame() {
+    document.getElementById("video").style.display = "block";
+    document.getElementById("redirectBtn").style.display = "block";
+    document.getElementById("score").innerText = "Respuestas correctas: " + score + "/6";
+    document.getElementById("game").style.display = "none";
+  }
+
+  function redirectToOtherSite() {
+    window.location.href = "http://teamoprincesa16.netlify.app";
+  }
+</script>
+
+</body>
+</html>
